@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -13,13 +14,15 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Metrics</name>
+	<description>adds endpoints for tracking metrics in OpenMRS</description>
 
 	<url>https://wiki.openmrs.org/x/FQ4z</url>
 
 	<scm>
 		<connection>scm:git:git@github.com:openmrs/openmrs-module-metrics.git</connection>
 		<developerConnection>scm:git:git@github.com:openmrs/openmrs-module-metrics.git</developerConnection>
-		<url>https://github.com/openmrs/openmrs-module-metrics/</url>
+		<url>https://github.com/openmrs/openmrs-module-module-metrics/</url>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
@@ -33,164 +36,153 @@
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>
 				<version>${openmrsPlatformVersion}</version>
-				<type>jar</type>
 				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.api</groupId>
-				<artifactId>openmrs-api</artifactId>
-				<version>${openmrsPlatformVersion}</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.web</groupId>
-				<artifactId>openmrs-web</artifactId>
-				<version>${openmrsPlatformVersion}</version>
-				<scope>provided</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>jstl</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>jsp-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>3.1.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.web</groupId>
-				<artifactId>openmrs-web</artifactId>
-				<version>${openmrsPlatformVersion}</version>
-				<type>test-jar</type>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.test</groupId>
-				<artifactId>openmrs-test</artifactId>
-				<version>${openmrsPlatformVersion}</version>
-				<type>pom</type>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs</groupId>
 				<artifactId>event-api</artifactId>
-				<version>${eventModuleVersion}</version>
+				<version>2.5</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-core</artifactId>
-				<version>${metrics.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>webservices.rest-omod</artifactId>
+				<version>${restVersion}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jmx</artifactId>
-				<version>${metrics.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jvm</artifactId>
-				<version>${metrics.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-servlets</artifactId>
-				<version>${metrics.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-databind</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-graphite</artifactId>
-				<version>${metrics.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>io.prometheus</groupId>
-				<artifactId>simpleclient_dropwizard</artifactId>
-				<version>${prometheusclient.version}</version>
+				<groupId>org.openmrs.module</groupId>
+				<artifactId>webservices.rest-omod-common</artifactId>
+				<version>${restVersion}</version>
+				<classifier>tests</classifier>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
-				<version>${lombokVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>29.0-jre</version>
-			</dependency>
-			<!-- WebServices -->
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod-common</artifactId>
-				<version>${webservices.restVersion}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.distro</groupId>
-				<artifactId>referenceapplication</artifactId>
-				<version>${referenceapplication.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>legacyui-omod</artifactId>
-				<version>${legacyuiVersion}</version>
+				<version>1.18.30</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
-	<dependencies>
-	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>resolveCiFriendliesOnly</flattenMode>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>2.11.0</version>
+				<configuration>
+					<lineEnding>LF</lineEnding>
+					<configFile>eclipse/OpenMRSFormatter.xml</configFile>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.openmrs.tools</groupId>
+						<artifactId>openmrs-tools</artifactId>
+						<version>${openmrsPlatformVersion}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.mycila</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<header>..${file.separator}license-header.txt</header>
+						<headerDefinitions>
+							<headerDefinition>..${file.separator}license-format.xml</headerDefinition>
+						</headerDefinitions>
+						<mapping>
+							<java>JAVA_STYLE</java>
+							<xml>MYXML_STYLE</xml>
+						</mapping>
+						<includes>
+							<include>**/*.java</include>
+							<include>**/*.xml</include>
+							<include>**/*.properties</include>
+						</includes>
+						<excludes>
+							<exclude>**/pom.xml</exclude>
+							<exclude>**/target/**</exclude>
+							<exclude>.git/**</exclude>
+							<exclude>.idea/**</exclude>
+							<exclude>.settings/**</exclude>
+							<exclude>.externalToolBuilders/</exclude>
+							<exclude>nbproject/private/</exclude>
+							<exclude>.vscode/**</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<id>check-license</id>
+							<goals>
+								<goal>check</goal>
+							</goals>
+							<phase>validate</phase>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>net.revelc.code</groupId>
+					<artifactId>impsort-maven-plugin</artifactId>
+					<version>1.3.2</version>
+					<configuration>
+						<groups>javax, java, *</groups>
+						<removeUnused>true</removeUnused>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>sort</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<repositories>
 		<repository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>https://mavenrepo.openmrs.org/public</url>
+			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
 		</repository>
 		<repository>
 			<id>central</id>
@@ -203,115 +195,41 @@
 		<pluginRepository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>https://mavenrepo.openmrs.org/public</url>
+			<url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<tagNameFormat>@{project.version}</tagNameFormat>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<target>${javaVersion}</target>
-						<source>${javaVersion}</source>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.openmrs.maven.plugins</groupId>
-					<artifactId>maven-openmrs-plugin</artifactId>
-					<version>1.0.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.4,)
-										</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											de.saumya.mojo
-										</groupId>
-										<artifactId>
-											gem-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.0.0-beta,)
-										</versionRange>
-										<goals>
-											<goal>exec</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
+	<profiles>
+		<profile>
+			<!-- Github Packages Integration -->
+			<id>github-packages</id>
+			<distributionManagement>
+				<!-- Deploy to Github Packages -->
+				<repository>
+					<id>github-packages</id>
+					<name>Github Maven Repo</name>
+					<url>https://maven.pkg.github.com/openmrs/openmrs-module-metrics</url>
+					<uniqueVersion>false</uniqueVersion>
+				</repository>
+				<snapshotRepository>
+					<id>github-packages</id>
+					<name>Github Maven Repo</name>
+					<url>https://maven.pkg.github.com/openmrs/openmrs-module-metrics</url>
+					<uniqueVersion>true</uniqueVersion>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 	<properties>
-		<javaVersion>1.8</javaVersion>
+		<fhir2Version>2.2.0</fhir2Version>
+		<restVersion>2.26.0</restVersion>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<openmrsPlatformVersion>2.1.4</openmrsPlatformVersion>
-		<eventModuleVersion>2.8.0</eventModuleVersion>
-		<metrics.version>4.1.7</metrics.version>
-		<prometheusclient.version>0.9.0</prometheusclient.version>
-		<micrometer.version>1.5.1</micrometer.version>
-		<lombokVersion>1.18.10</lombokVersion>
-		<webservices.restVersion>2.16</webservices.restVersion>
-		<webservicesRestModuleVersion>2.6</webservicesRestModuleVersion>
-		<referenceapplication.version>2.8.1</referenceapplication.version>
-		<legacyuiVersion>1.4.0</legacyuiVersion>
-		<uicommonsModuleVersion>2.6.0</uicommonsModuleVersion>
+		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+		<openmrsPlatformVersion>2.3.1</openmrsPlatformVersion>
+		<hapifhirVersion>4.2.0</hapifhirVersion>
 	</properties>
 </project>
