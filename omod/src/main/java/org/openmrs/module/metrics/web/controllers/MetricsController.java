@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 @Controller 
@@ -34,16 +36,23 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 public class MetricsController  extends BaseRestController {
 	private Log log = LogFactory.getLog(this.getClass());
 
-    private final PrometheusMeterRegistry prometheusMeterRegistry;
+    private final CompositeMeterRegistry meterRegistry;
 
-    public MetricsController(PrometheusMeterRegistry registry) {
-        this.prometheusMeterRegistry = registry;
+    public MetricsController(CompositeMeterRegistry registry) {
+        this.meterRegistry = registry;
     }
 
-	@RequestMapping(method = RequestMethod.GET, produces = "text/plain")
+	@RequestMapping(value="/prometheus", method = RequestMethod.GET, produces = "text/plain")
 	@ResponseBody
 	public String scrape(HttpServletRequest request, HttpServletResponse response)
 	        throws ResponseException, JsonParseException, JsonMappingException, IOException {
-		return prometheusMeterRegistry.scrape();
+
+			for (MeterRegistry registry : meterRegistry.getRegistries()) {
+				if (registry instanceof PrometheusMeterRegistry) {
+					return ((PrometheusMeterRegistry) registry).scrape();
+				}
+			}
+			throw new org.springframework.web.server.ResponseStatusException(
+				org.springframework.http.HttpStatus.NOT_FOUND, "Prometheus registry not found");
 	}
 }

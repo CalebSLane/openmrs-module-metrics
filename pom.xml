@@ -33,15 +33,36 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>io.micrometer</groupId>
+				<artifactId>micrometer-core</artifactId>
+				<version>1.15.2</version>
+			</dependency>
+			<dependency>
+				<groupId>io.micrometer</groupId>
+				<artifactId>micrometer-registry-prometheus</artifactId>
+				<version>1.15.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${springVersion}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>tomcat-catalina</artifactId>
+				<version>9.0.107</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.openmrs.api</groupId>
 				<artifactId>openmrs-api</artifactId>
 				<version>${openmrsPlatformVersion}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.openmrs</groupId>
-				<artifactId>event-api</artifactId>
-				<version>2.5</version>
+				<groupId>org.openmrs.api</groupId>
+				<artifactId>openmrs-api</artifactId>
+				<version>${openmrsPlatformVersion}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -62,6 +83,11 @@
 				<artifactId>lombok</artifactId>
 				<version>1.18.30</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.catalina</groupId>
+				<artifactId>catalina</artifactId>
+				<version>6.0.26</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -93,7 +119,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>net.revelc.code.formatter</groupId>
 				<artifactId>formatter-maven-plugin</artifactId>
 				<version>2.11.0</version>
@@ -115,7 +141,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -223,13 +249,12 @@
 		</profile>
 	</profiles>
 	<properties>
-		<fhir2Version>2.2.0</fhir2Version>
 		<restVersion>2.26.0</restVersion>
+		<springVersion>5.3.30</springVersion>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
-		<openmrsPlatformVersion>2.3.1</openmrsPlatformVersion>
-		<hapifhirVersion>4.2.0</hapifhirVersion>
+		<openmrsPlatformVersion>2.8.0-SNAPSHOT</openmrsPlatformVersion>
 	</properties>
 </project>
