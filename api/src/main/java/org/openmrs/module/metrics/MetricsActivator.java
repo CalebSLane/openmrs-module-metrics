@@ -33,7 +33,7 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 
 	@Override
 	public void started() {
-        // applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
+        applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 
 		log.info("Started the metrics Service module");
 	}
