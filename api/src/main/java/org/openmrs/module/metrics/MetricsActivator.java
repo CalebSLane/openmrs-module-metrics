@@ -13,10 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.ModuleActivator;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -24,17 +20,13 @@ import org.springframework.stereotype.Component;
 /**
  * {@link ModuleActivator} for the webservices.rest module
  */
-@Component
-public class MetricsActivator extends BaseModuleActivator implements ApplicationContextAware {
+public class MetricsActivator extends BaseModuleActivator {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 
-	private ApplicationContext applicationContext;
 
 	@Override
 	public void started() {
-        applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
-
 		log.info("Started the metrics Service module");
 	}
 	
@@ -42,9 +34,4 @@ public class MetricsActivator extends BaseModuleActivator implements Application
 	public void stopped() {
 		log.info("Stopped the metrics Service module");
 	}
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }

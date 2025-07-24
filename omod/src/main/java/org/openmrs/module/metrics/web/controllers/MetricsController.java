@@ -27,32 +27,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 @Controller 
 @RequestMapping(value = "/rest/" + RestConstants.VERSION_1 + "/metrics")
-public class MetricsController  extends BaseRestController {
+public class MetricsController extends BaseRestController {
 	private Log log = LogFactory.getLog(this.getClass());
+    
+	private final MeterRegistry meterRegistry;
 
-    private final CompositeMeterRegistry meterRegistry;
+	Counter counter;
 
-    public MetricsController(CompositeMeterRegistry registry) {
+    public MetricsController(MeterRegistry registry) {
         this.meterRegistry = registry;
     }
 
 	@RequestMapping(value="/prometheus", method = RequestMethod.GET, produces = "text/plain")
 	@ResponseBody
 	public String scrape(HttpServletRequest request, HttpServletResponse response)
-	        throws ResponseException, JsonParseException, JsonMappingException, IOException {
-
-			for (MeterRegistry registry : meterRegistry.getRegistries()) {
-				if (registry instanceof PrometheusMeterRegistry) {
-					return ((PrometheusMeterRegistry) registry).scrape();
-				}
+			throws ResponseException, JsonParseException, JsonMappingException, IOException {
+		// for (MeterRegistry registry : meterRegistry.getRegistries()) {
+			if (meterRegistry instanceof PrometheusMeterRegistry) {
+				return ((PrometheusMeterRegistry) meterRegistry).scrape();
 			}
-			throw new org.springframework.web.server.ResponseStatusException(
-				org.springframework.http.HttpStatus.NOT_FOUND, "Prometheus registry not found");
+		// }
+		throw new org.springframework.web.server.ResponseStatusException(
+			org.springframework.http.HttpStatus.NOT_FOUND, "Prometheus registry not found");
 	}
 }

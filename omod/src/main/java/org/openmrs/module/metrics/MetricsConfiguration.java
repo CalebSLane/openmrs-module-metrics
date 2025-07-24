@@ -9,65 +9,48 @@
  */
 package org.openmrs.module.metrics;
 
-import java.io.File;
-import java.util.Arrays;
+import java.util.Set;
 
-import org.openmrs.util.OpenmrsThreadPoolHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.micrometer.core.instrument.Tag;
-import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
-import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmCompilationMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmHeapPressureMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmInfoMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmThreadDeadlockMetrics;
-import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
-import io.micrometer.core.instrument.binder.logging.Log4j2Metrics;
-import io.micrometer.core.instrument.binder.system.DiskSpaceMetrics;
-import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
-import io.micrometer.core.instrument.binder.system.UptimeMetrics;
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.aop.CountedAspect;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
+import io.micrometer.prometheusmetrics.PrometheusRenameFilter;
 
 @Configuration
 public class MetricsConfiguration {
 
+    // @Bean
+    // public CompositeMeterRegistry meterRegistry(Set<MeterBinder> binders) {
+    //     CompositeMeterRegistry compositeMeterRegistry = new CompositeMeterRegistry();
+    //     compositeMeterRegistry.add(prometheusMeterRegistry());
+    //     binders.forEach(binder -> binder.bindTo(compositeMeterRegistry));
+
+    //     return compositeMeterRegistry;
+    // }
+
     @Bean
-    public CompositeMeterRegistry meterRegistry() {
-        CompositeMeterRegistry compositeMeterRegistry = new CompositeMeterRegistry();
-        compositeMeterRegistry.add(prometheusMeterRegistry());
-        return compositeMeterRegistry;
+    public TimedAspect timedAspect(MeterRegistry registry) {
+        return new TimedAspect(registry);
     }
 
-    public PrometheusMeterRegistry prometheusMeterRegistry() {
+    @Bean
+    public CountedAspect countedAspect(MeterRegistry registry) {
+        return new CountedAspect(registry);
+    }
+
+    @Bean
+    public PrometheusMeterRegistry prometheusMeterRegistry(Set<MeterBinder> binders) {
         PrometheusMeterRegistry registry= new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+        registry.config().meterFilter(new PrometheusRenameFilter());
         registry.config().commonTags("application", "openmrs-backend");
-        registerCommonMetrics(registry);
+        binders.forEach(binder -> binder.bindTo(registry));
         return registry;
-    } 
-
-	private void registerCommonMetrics(PrometheusMeterRegistry meterRegistry) {
-		new ClassLoaderMetrics().bindTo(meterRegistry);
-        new JvmMemoryMetrics().bindTo(meterRegistry);
-        new JvmGcMetrics().bindTo(meterRegistry);
-        new ProcessorMetrics().bindTo(meterRegistry);
-        new JvmThreadMetrics().bindTo(meterRegistry);
-        new JvmThreadDeadlockMetrics().bindTo(meterRegistry);
-        new Log4j2Metrics().bindTo(meterRegistry);
-        new UptimeMetrics().bindTo(meterRegistry);
-        new DiskSpaceMetrics(new File("/")).bindTo(meterRegistry);
-        // new PostgreSQLDatabaseMetrics(dataSource, OpenmrsConstants.DATABASE_NAME).bindTo(meterRegistry);
-        // new TomcatMetrics(getManager(context), Arrays.asList(Tag.of("tomcat-metrics", "openmrs-backend"))).bindTo(meterRegistry);
-        new ExecutorServiceMetrics(OpenmrsThreadPoolHolder.threadExecutor, "threadExecutor", Arrays.asList(Tag.of("thread-executor", "openmrs-backend"))).bindTo(meterRegistry);
-        new JvmHeapPressureMetrics().bindTo(meterRegistry);
-        new JvmInfoMetrics().bindTo(meterRegistry);
-        new JvmCompilationMetrics().bindTo(meterRegistry);
-	}
-
+    }
 
 }
