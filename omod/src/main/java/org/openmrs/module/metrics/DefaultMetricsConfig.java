@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.openmrs.module.metrics.api.annotation.ConditionalOnBean;
+import org.openmrs.module.metrics.api.meters.TomcatJMXMetrics;
 import org.openmrs.util.OpenmrsThreadPoolHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import com.google.common.cache.Cache;
 import groovy.util.logging.Slf4j;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.GuavaCacheMetrics;
 import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
 import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
@@ -33,73 +35,78 @@ import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 @Slf4j
 public class DefaultMetricsConfig {
     @Bean
-    public DiskSpaceMetrics diskSpaceMetrics() {
+    public MeterBinder diskSpaceMetrics() {
         return new DiskSpaceMetrics(new File("."));
     }
 
     @Bean
-    public FileDescriptorMetrics fileDescriptorMetrics() {
+    public MeterBinder fileDescriptorMetrics() {
         return new FileDescriptorMetrics();
     }
 
     @Bean
-    public ProcessorMetrics processorMetrics() {
+    public MeterBinder processorMetrics() {
         return new ProcessorMetrics();
     }
 
     @Bean
-    public UptimeMetrics uptimeMetrics() {
+    public MeterBinder uptimeMetrics() {
         return new UptimeMetrics();
     }
 
     @Bean
-    public ClassLoaderMetrics classLoaderMetrics() {
+    public MeterBinder classLoaderMetrics() {
         return new ClassLoaderMetrics();
     }
 
     @Bean
-    public JvmMemoryMetrics jvmMemoryMetrics() {
+    public MeterBinder jvmMemoryMetrics() {
         return new JvmMemoryMetrics();
     }   
 
     @Bean
-    public JvmGcMetrics jvmGcMetrics() {
+    public MeterBinder jvmGcMetrics() {
         return new JvmGcMetrics();
     }
+
     @Bean
-    public JvmThreadMetrics jvmThreadMetrics() {
+    public MeterBinder jvmThreadMetrics() {
         return new JvmThreadMetrics();
     }   
 
     @Bean   
-    public JvmThreadDeadlockMetrics jvmThreadDeadlockMetrics() {
+    public MeterBinder jvmThreadDeadlockMetrics() {
         return new JvmThreadDeadlockMetrics();
     }   
 
     @Bean
-    public JvmHeapPressureMetrics jvmHeapPressureMetrics() {
+    public MeterBinder jvmHeapPressureMetrics() {
         return new JvmHeapPressureMetrics();
     }
+
     @Bean
-    public JvmInfoMetrics jvmInfoMetrics() {
+    public MeterBinder jvmInfoMetrics() {
         return new JvmInfoMetrics();
     }   
+
     @Bean
-    public JvmCompilationMetrics jvmCompilationMetrics() {
+    public MeterBinder jvmCompilationMetrics() {
         return new JvmCompilationMetrics();
     }   
 
     @Bean
-    public Log4j2Metrics log4j2Metrics() {
+    public MeterBinder log4j2Metrics() {
         return new Log4j2Metrics();
     }   
+
     @Bean
-    public ExecutorServiceMetrics executorServiceMetrics() {
+    public MeterBinder executorServiceMetrics() {
         return new ExecutorServiceMetrics(OpenmrsThreadPoolHolder.threadExecutor, "threadExecutor", Arrays.asList());
     }
+
     @Bean
     @ConditionalOnBean(value = Cache.class)
-    public GuavaCacheMetrics<String, String, Cache<String, String>> guavaCacheMetrics(Cache cache) {
+    public MeterBinder guavaCacheMetrics(Cache cache) {
         return new GuavaCacheMetrics<>(cache, "guavaCache", Arrays.asList());
     }
 
@@ -110,7 +117,7 @@ public class DefaultMetricsConfig {
     // }
 
     @Bean
-    public TomcatJMXMetrics tomcatJmxMetrics() {
+    public MeterBinder tomcatJmxMetrics() {
         return new TomcatJMXMetrics();
     }
 
@@ -127,4 +134,5 @@ public class DefaultMetricsConfig {
                     .baseUnit("bytes")
                     .register(registry);
     }
+
 }

@@ -1,10 +1,8 @@
-package org.openmrs.module.metrics;
+package org.openmrs.module.metrics.api.meters;
 
 import java.lang.management.ManagementFactory;
-
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +26,7 @@ public class TomcatJMXMetrics implements MeterBinder {
     private void registerSessionMetrics(MeterRegistry registry, String contextPath, String host) {
         try {
             ObjectName managerName = new ObjectName(
-                    String.format("Catalina:type=Manager,host=%s,context=%s", contextPath, host));
+                    String.format("Catalina:type=Manager,host=%s,context=%s", host, contextPath));
 
             Gauge.builder("tomcat.sessions.active.current", () -> getAttribute(managerName, "activeSessions"))
                     .description("Current active sessions")

@@ -1,11 +1,12 @@
-package org.openmrs.module.metrics.api.annotation;
+package org.openmrs.module.metrics.api.annotation.condition;
 
+import org.openmrs.module.metrics.api.annotation.ConditionalOnBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.ConfigurationCondition;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
-class BeanCondition implements ConfigurationCondition {
+public class MissingBeanCondition implements ConfigurationCondition {
     @Override
     public ConfigurationPhase getConfigurationPhase() {
         return ConfigurationPhase.REGISTER_BEAN;

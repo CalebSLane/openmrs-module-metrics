@@ -9,32 +9,29 @@
  */
 package org.openmrs.module.metrics.web.controllers;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RestConstants;
-import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.openmrs.module.webservices.rest.web.RestUtil;
 import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
-import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 
 @Controller 
-@RequestMapping(value = "/rest/" + RestConstants.VERSION_1 + "/metrics")
+@RequestMapping("/module/metrics")
 public class MetricsController extends BaseRestController {
 	private Log log = LogFactory.getLog(this.getClass());
     
@@ -48,8 +45,8 @@ public class MetricsController extends BaseRestController {
 
 	@RequestMapping(value="/prometheus", method = RequestMethod.GET, produces = "text/plain")
 	@ResponseBody
-	public String scrape(HttpServletRequest request, HttpServletResponse response)
-			throws ResponseException, JsonParseException, JsonMappingException, IOException {
+	@Timed
+	public String scrape(HttpServletRequest request, HttpServletResponse response) {
 		// for (MeterRegistry registry : meterRegistry.getRegistries()) {
 			if (meterRegistry instanceof PrometheusMeterRegistry) {
 				return ((PrometheusMeterRegistry) meterRegistry).scrape();

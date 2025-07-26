@@ -12,14 +12,12 @@
 		${project.parent.description}
 	</description>
 
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.MetricsActivator</activator>
+	<activator>${project.parent.groupId}.${project.parent.artifactId}.api.MetricsActivator</activator>
 
 	<!-- <updateURL>https://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
 	<!-- /Base Module Properties -->
 
 	<require_version>${openMRSVersion}</require_version>
-
-	<!-- Extensions -->
 
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
@@ -30,6 +28,11 @@
 		<require_module>org.openmrs.module.fhir2</require_module>
 		<require_module>org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
+
+	<!-- <advice>
+		<point>org.openmrs.api.PatientService</point>
+		<class>org.openmrs.module.helloWorld.advice.CountingAfterAdvice</class>
+	</advice> -->
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->
