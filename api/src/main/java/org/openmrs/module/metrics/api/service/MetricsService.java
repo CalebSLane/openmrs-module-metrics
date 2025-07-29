@@ -6,6 +6,5 @@ import io.micrometer.core.instrument.MeterRegistry;
 
 public interface MetricsService extends OpenmrsService {
 
-	public MeterRegistry getMeterRegistry();
 
 }

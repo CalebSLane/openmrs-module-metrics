@@ -7,7 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.metrics.api;
+package org.openmrs.module.metrics;
 
 import java.util.Set;
 
@@ -76,7 +76,7 @@ public class MetricsConfiguration {
     // }
 
     @Bean
-    public PrometheusMeterRegistry prometheusMeterRegistry(Set<MeterBinder> binders) {
+    public MeterRegistry prometheusMeterRegistry(Set<MeterBinder> binders) {
         PrometheusMeterRegistry registry= new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
         registry.config().meterFilter(new PrometheusRenameFilter());
         registry.config().commonTags("application", "openmrs-backend");

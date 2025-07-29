@@ -24,8 +24,6 @@
 	</aware_of_modules>
 
 	<require_modules>
-		<require_module>org.openmrs.event</require_module>
-		<require_module>org.openmrs.module.fhir2</require_module>
 		<require_module>org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
 
